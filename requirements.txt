@@ -1,0 +1,3 @@
+genblaze
+genblaze-gmicloud
+boto3
