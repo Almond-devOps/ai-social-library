@@ -47,6 +47,14 @@ def generate_and_store(prompt: str, model: str = "seedream-5.0-lite"):
         .run(sink=storage, timeout=120)
     )
 
+    if not result.run.steps or not result.run.steps[0].assets:
+       raise RuntimeError(
+           "Generation completed but returned no image. This usually means "
+           "the request was cut off before GMI Cloud finished generating "
+           "(check that this function's maxDuration is set high enough in "
+           "vercel.json), or that the GMI_API_KEY is invalid/missing quota."
+       )
+
     asset = result.run.steps[0].assets[0]
 
     # Write our own lightweight metadata sidecar for the gallery UI, in
